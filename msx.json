@@ -1,0 +1,6 @@
+{
+  "name": "BeePopcorn TV",
+  "version": "1.0.0",
+  "icon": "https://tv-desktop.beepopcorn.ru/favicon.ico",
+  "action": "link:https://tv-desktop.beepopcorn.ru"
+}
