@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Сброс и базовые настройки */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 96px;
+            overflow: hidden;
+            background: transparent; /* Полная прозрачность основы */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Контейнер футера с эффектом матового стекла */
+        .footer-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15); /* Очень легкое затемнение для читаемости */
+            backdrop-filter: blur(4px); /* Эффект размытия фона HA (матовое стекло) */
+            -webkit-backdrop-filter: blur(4px);
+            border-top: 1px solid rgba(255, 152, 0, 0.2); /* Тонкая якорная линия сверху */
+        }
+
+        /* Дышащая верхняя линия */
+        .breath-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #FF9800 20%, #03A9F4 50%, #FF9800 80%, transparent 100%);
+            box-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
+            animation: breathe 4s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Бегущий сигнал */
+        .signal-pulse {
+            position: absolute;
+            top: 50%;
+            left: -15%;
+            width: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #03A9F4, #ffffff, #03A9F4, transparent);
+            filter: blur(1px);
+            box-shadow: 0 0 15px #03A9F4;
+            animation: signal-move 7s linear infinite;
+        }
+        @keyframes signal-move {
+            0% { left: -15%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 115%; opacity: 0; }
+        }
+
+        /* Пульсация узлов */
+        .node-pulse {
+            animation: node-blink 3s ease-in-out infinite;
+            transform-origin: center;
+        }
+        .node-pulse:nth-child(2n) { animation-delay: 0.5s; }
+        .node-pulse:nth-child(3n) { animation-delay: 1.2s; }
+        .node-pulse:nth-child(5n) { animation-delay: 1.8s; }
+        @keyframes node-blink {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Мерцание чипов */
+        .chip-flicker {
+            animation: chip-glow 5s ease-in-out infinite;
+        }
+        .chip-flicker:nth-child(2n) { animation-delay: 1.5s; }
+        .chip-flicker:nth-child(3n) { animation-delay: 2.8s; }
+        @keyframes chip-glow {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Анимация линий */
+        .circuit-line {
+            stroke-dasharray: 6 6;
+            animation: dash-flow 25s linear infinite;
+        }
+        @keyframes dash-flow {
+            to { stroke-dashoffset: -300; }
+        }
+
+        /* Фоновая сетка (адаптирована для любого фона) */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        /* Виньетка (мягкое затемнение только по краям, чтобы свечение не терялось на светлых обоях) */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="footer-container">
+        <div class="grid-bg"></div>
+        <div class="breath-line"></div>
+
+        <svg width="100%" height="100%" viewBox="0 0 1200 96" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FF9800" stop-opacity="0"/>
+                    <stop offset="30%" stop-color="#FF9800" stop-opacity="0.7"/>
+                    <stop offset="70%" stop-color="#03A9F4" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#03A9F4" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <g stroke="url(#lineGrad)" stroke-width="1.5" fill="none" filter="url(#glow)" vector-effect="non-scaling-stroke">
+                <path class="circuit-line" d="M 0 48 L 120 48 L 140 28 L 260 28 L 280 48 L 420 48"/>
+                <path class="circuit-line" d="M 420 48 L 440 68 L 580 68 L 600 48 L 740 48"/>
+                <path class="circuit-line" d="M 740 48 L 760 28 L 880 28 L 900 48 L 1040 48"/>
+                <path class="circuit-line" d="M 1040 48 L 1060 68 L 1200 68"/>
+                
+                <path class="circuit-line" d="M 200 28 L 200 10" opacity="0.6"/>
+                <path class="circuit-line" d="M 500 68 L 500 86" opacity="0.6"/>
+                <path class="circuit-line" d="M 820 28 L 820 10" opacity="0.6"/>
+                <path class="circuit-line" d="M 1120 68 L 1120 86" opacity="0.6"/>
+            </g>
+
+            <g fill="none" stroke-width="1.5" vector-effect="non-scaling-stroke">
+                <rect class="chip-flicker" x="185" y="20" width="30" height="16" stroke="#FF9800" opacity="0.5"/>
+                <rect class="chip-flicker" x="485" y="60" width="30" height="16" stroke="#03A9F4" opacity="0.5"/>
+                <rect class="chip-flicker" x="805" y="20" width="30" height="16" stroke="#FF9800" opacity="0.5"/>
+                <rect class="chip-flicker" x="1105" y="60" width="30" height="16" stroke="#03A9F4" opacity="0.5"/>
+            </g>
+
+            <g filter="url(#glow)">
+                <circle class="node-pulse" cx="140" cy="28" r="3" fill="#FF9800"/>
+                <circle class="node-pulse" cx="280" cy="48" r="3" fill="#FF9800"/>
+                <circle class="node-pulse" cx="440" cy="68" r="3" fill="#03A9F4"/>
+                <circle class="node-pulse" cx="600" cy="48" r="3" fill="#03A9F4"/>
+                <circle class="node-pulse" cx="760" cy="28" r="3" fill="#FF9800"/>
+                <circle class="node-pulse" cx="900" cy="48" r="3" fill="#FF9800"/>
+                <circle class="node-pulse" cx="1060" cy="68" r="3" fill="#03A9F4"/>
+            </g>
+        </svg>
+
+        <div class="signal-pulse"></div>
+        <div class="vignette"></div>
+    </div>
+</body>
+</html>
